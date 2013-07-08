@@ -1,0 +1,24 @@
+.slider {
+    width: 200px;
+    float: left;
+    margin-top:2px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+input {
+    float: left;
+}
+
+table {
+    float: left;
+}
+
+.highlight {
+    font-weight: bolder;
+}
+
+.header {
+    font-size: x-large;
+    font-weight: bold;
+}

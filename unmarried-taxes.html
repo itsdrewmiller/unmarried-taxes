@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/unmarried-taxes.css" />
+        <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css" />
+    </head>
+    <body>
+
+        <div id="body" ng-app="unmarriedTaxes" ng-controller="UnmarriedTaxesCtrl">
+
+            <table>
+                <tr>
+                    <th colspan="3"></th>
+                    <th>Drew</th>
+                    <th>Kathleen</th>
+                </tr>
+
+                <tr>
+                    <td colspan="3">Wage Income</td>
+                    <th><input currency ng-model="incomeFirst.wage" /></th>
+                    <th><input currency ng-model="incomeSecond.wage" /></th>
+                </tr>
+
+                <tr>
+                    <td colspan="3">Undergraduate Loan Interest</td>
+                    <th><input currency ng-model="incomeFirst.undergraduateLoanInterest" /></th>
+                    <th><input currency ng-model="incomeSecond.undergraduateLoanInterest" /></th>
+                </tr>
+
+                <tr>
+                    <td colspan="3">State Tax Withheld</td>
+                    <th><input currency ng-model="incomeFirst.stateTaxWithheld" /></th>
+                    <th><input currency ng-model="incomeSecond.stateTaxWithheld" /></th>
+                </tr>
+
+                <tr>
+                    <td colspan="3">Last Year's State Tax Paid (negative for refund)</td>
+                    <th><input currency ng-model="incomeFirst.lastYearStateTaxPayment" /></th>
+                    <th><input currency ng-model="incomeSecond.lastYearStateTaxPayment" /></th>
+                </tr>
+
+                <tr currency-slidebox id="shortTermCapitalGains" label="Short Term Capital Gains" ng-model="shortTermCapitalGains" />
+                <tr currency-slidebox id="longTermCapitalGains" label="Long Term Capital Gains" ng-model="longTermCapitalGains" />
+                <tr currency-slidebox id="ordinaryDividends" label="Ordinary Dividends" ng-model="ordinaryDividends" />
+                <tr currency-slidebox id="qualifiedDividends" label="Qualified Dividends" ng-model="qualifiedDividends" />
+                <tr currency-slidebox id="outOfStateInterest" label="Out Of State Interest" ng-model="outOfStateInterest" />
+                <tr currency-slidebox id="maInterest" label="Massachusetts Interest" ng-model="maInterest" />
+                <tr currency-slidebox id="dependentCareFsa" label="Dependent Care FSA" ng-model="dependentCareFsa" />
+                <tr integer-slidebox id="numDependents" label="Number of Dependents" ng-model="numDependents" />
+                <tr currency-slidebox id="propertyTaxes" label="Property Tax" ng-model="propertyTax" />
+                <tr currency-slidebox id="mortgageInterest" label="Mortgage Interest" ng-model="mortgageInterest" />
+                <tr currency-slidebox id="mortgageInsurance" label="Mortgage Insurance" ng-model="mortgageInsurance" />
+                <tr currency-slidebox id="charitableGiving" label="Charitable Giving" ng-model="charitableGiving" />
+                <tr currency-slidebox id="childCare" label="Child Care Expenses" ng-model="childCare" />
+                <tr currency-slidebox id="rent" label="Rent" ng-model="rent" />
+                <tr currency-slidebox id="commute" label="Commuting Expenses" ng-model="commute" />
+
+            </table>
+            
+            <div style="float: left;">
+            <span class="header">Savings over Married: {{ GetOverallMarried() - GetOverallFirst() - GetOverallSecond() | currency }}</span>
+
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Drew</th>
+                    <th>Kathleen</th>
+                    <th>Married</th>
+                    <th>Total</th>
+                </tr>
+                <tr>
+                    <td>Federal (Regular)</td>
+                    <td>{{GetFederalRegularFirst() | currency}}</td>
+                    <td>{{GetFederalRegularSecond() | currency}}</td>
+                    <td>{{GetFederalRegularMarried() | currency}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Federal (AMT)</td>
+                    <td>{{GetFederalAmtFirst() | currency}}</td>
+                    <td>{{GetFederalAmtSecond() | currency}}</td>
+                    <td>{{GetFederalAmtMarried() | currency}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Federal (Payroll)</td>
+                    <td>{{GetFederalPayrollFirst() | currency}}</td>
+                    <td>{{GetFederalPayrollSecond() | currency}}</td>
+                    <td>{{GetFederalPayrollFirst() + GetFederalPayrollSecond() | currency}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>State (MA)</td>
+                    <td>{{GetStateMaFirst() | currency}}</td>
+                    <td>{{GetStateMaSecond() | currency}}</td>
+                    <td>{{GetStateMaMarried() | currency}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>{{GetOverallFirst() | currency}}</td>
+                    <td>{{GetOverallSecond() | currency}}</td>
+                    <td>{{GetOverallMarried() | currency}}</td>
+                    <td class="highlight">{{GetOverallFirst() + GetOverallSecond() | currency}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <script src="js/accounting/accounting.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+        <script src="js/taxes/unmarriedTaxesCtrl.js"></script>
+        <script src="js/taxes/Income.js"></script>
+        <script src="js/taxes/Taxes.js"></script>
+        <script src="js/taxes/TaxCalculator.js"></script>
+        <script src="js/queue/queue.js"></script>
+        <script src="js/branchAndBound/branchAndBound.js"></script>
+
+
+    </body>
+</html>
