@@ -1,9 +1,9 @@
 [submodule "js/accounting"]
 	path = js/accounting
 	url = https://github.com/josscrowcroft/accounting.js.git
-[submodule "js/queue"]
-	path = js/queue
-	url = https://github.com/itsdrewmiller/queue.js.git
+[submodule "js/lodash"]
+	path = js/lodash
+	url = https://github.com/lodash/lodash.git
 [submodule "js/branchAndBound"]
 	path = js/branchAndBound
-	url = https://github.com/itsdrewmiller/branchAndBound.js
+	url = https://github.com/itsdrewmiller/branchAndBound.js.git
