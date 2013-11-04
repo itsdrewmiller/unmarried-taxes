@@ -2,23 +2,23 @@
 var outerBox = { vars: [] };
 
 //
-var maxMortgageInterest = 22750.00;
+var maxMortgageInterest = 23750.00;
 var maxPropertyTax = 7000.00;
-// var maxCharity = 7441.28;
+var maxCharity = 25000.00;
 var maxDependents = 1;
 var maxMortgageInsurance = 4200 + 5137.50 / 7;
 
-outerBox.mortgageInterest = { min: 0, max: maxMortgageInterest, weight: 1, isDiscrete: false };
-// outerBox.charity = { min: 0, max: maxCharity, weight: 1, isDiscrete: false };
-outerBox.dependents = { min: 0, max: maxDependents, weight: 100000, isDiscrete: true };
-outerBox.propertyTax = { min: 0, max: maxPropertyTax, weight: 1, isDiscrete: false };
-outerBox.mortgageInsurance = { min: 0, max: maxMortgageInsurance, weight: 1, isDiscrete: false };
+outerBox.mortgageInterest = { min: 0, max: maxMortgageInterest };
+outerBox.dependents = { min: 0, max: maxDependents, splitWeight: 100000, isDiscrete: true };
+outerBox.propertyTax = { min: 0, max: maxPropertyTax };
+outerBox.charity = { min: 0, max: maxCharity };
+outerBox.mortgageInsurance = { min: 0, max: maxMortgageInsurance };
 
 var bnb = new Bnb('min');
 bnb.initialBox = outerBox;
 
 // For demonstration purposes only
-var income1 = new Income(100000.00, 0, 0, 0, 0, 0, 0, 500, 0, 'single', 0, 0, 0, 0, 0, 0, 0, 5000.00, 0, 0);
+var income1 = new Income(100000.00, 0, 0, 0, 0, 0, 0, 0, 0, 'single', 0, 0, 0, 0, 0, 0, 0, 5000.00, 0, 0);
 var income2 = new Income(200000.00, 0, 0, 0, 0, 0, 0, 0, 0, 'single', 0, 0, 0, 0, 0, 0, 0, 10000.00, 0, 0);
 
 var taxes = new Taxes();
@@ -28,8 +28,8 @@ bnb.lowerBound = function (box) {
     income1.MortgageInterest = maxMortgageInterest - box.mortgageInterest.min;
     income2.MortgageInterest = box.mortgageInterest.max;
 
-//    income1.Charity = maxCharity - box.charity.min;
-//    income2.Charity = box.charity.max;
+    income1.Charity = maxCharity - box.charity.min;
+    income2.Charity = box.charity.max;
 
     income1.NumDependents = maxDependents - box.dependents.min;
     income2.NumDependents = box.dependents.max;
@@ -54,8 +54,8 @@ bnb.upperBound = function (box) {
     income1.MortgageInterest = maxMortgageInterest - box.mortgageInterest.max;
     income2.MortgageInterest = box.mortgageInterest.min;
 
-//    income1.Charity = maxCharity - box.charity.max;
-//    income2.Charity = box.charity.min;
+    income1.Charity = maxCharity - box.charity.max;
+    income2.Charity = box.charity.min;
 
     income1.NumDependents = maxDependents - box.dependents.max;
     income2.NumDependents = box.dependents.min;
@@ -83,8 +83,8 @@ bnb.iteration = function (status) {
     }
 };
 
-bnb.tolerance = 500;
-bnb.loopAbort = 1000000;
+bnb.tolerance = 100;
+bnb.loopAbort = 10000000;
 
 bnb.start(function (err, bnb) {
     console.log('Finished');
