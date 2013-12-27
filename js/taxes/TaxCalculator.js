@@ -220,9 +220,26 @@
         };
 
         self.calculatePayrollTax = function (taxes, income) {
+
+
+            var additionalMedicareStart = Infinity;
+            switch(income.Type) {
+                case 'single':
+                    additionalMedicareStart = taxes.MedicareAdditionalStart.single;
+                    break;
+                case 'married':
+                    additionalMedicareStart = taxes.MedicareAdditionalStart.married;
+                    break;
+                case 'hoh':
+                    additionalMedicareStart = taxes.MedicareAdditionalStart.headOfHousehold;
+                    break;
+                default:
+                    throw 'Invalid income type';
+            }
+
             var taxableIncome = income.WageIncome - income.DependentCareFsa;
             var payrollTax = Math.min(taxableIncome * taxes.SocialSecurityRate, taxes.SocialSecurityCap * taxes.SocialSecurityRate);
-            payrollTax += taxableIncome * taxes.MedicareRate + Math.max(0, (taxableIncome - taxes.MedicareAdditionalStart) * taxes.MedicareAdditionalRate);
+            payrollTax += taxableIncome * taxes.MedicareRate + Math.max(0, (taxableIncome - additionalMedicareStart) * taxes.MedicareAdditionalRate);
 
             return parseFloat(accounting.toFixed(payrollTax, 2));
         };
