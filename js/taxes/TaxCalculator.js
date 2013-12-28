@@ -15,23 +15,23 @@
         };
 
         self.calculateMortgageInsuranceDeduction = function (taxes, income) {
-            var mortgageInsuranceOverage = self.calculateFederalAgi(income) - taxes.MortgageInsurancePhaseOutStart;
+            var mortgageInsuranceOverage = self.calculateFederalAgi(income) - taxes.mortgageInsurancePhaseOut.start;
             var mortgageInsuranceDeductionRatio = 1;
             if (mortgageInsuranceOverage > 0) {
-                var incrementsOver = Math.ceil(mortgageInsuranceOverage / taxes.MortgageInsurancePhaseOutIncrement);
-                mortgageInsuranceDeductionRatio -= Math.min(incrementsOver * taxes.MortgageInsurancePhaseOutPerIncrement, 1);
+                var incrementsOver = Math.ceil(mortgageInsuranceOverage / taxes.mortgageInsurancePhaseOut.increment);
+                mortgageInsuranceDeductionRatio -= Math.min(incrementsOver * taxes.mortgageInsurancePhaseOut.perIncrement, 1);
             }
             return mortgageInsuranceDeductionRatio * income.mortgageInsurance;
         };
 
         self.calculateChildAndDependentCareCredit = function (taxes, income) {
-            var childCareOverage = self.calculateFederalAgi(income) - taxes.childAndDependentCarePhaseOutStart;
-            var childCareEligibleExpenses = Math.min(taxes.childAndDependentCareMaxExpenses, income.numDependents * taxes.childAndDependentCareExpensesPerDependent, income.childCare) - (income.numDependents > 0 ? income.dependentCareFsa : 0);
+            var childCareOverage = self.calculateFederalAgi(income) - taxes.childAndDependentCare.phaseOut.start;
+            var childCareEligibleExpenses = Math.min(taxes.childAndDependentCare.maxExpenses, income.numDependents * taxes.childAndDependentCare.expensesPerDependent, income.childCare) - (income.numDependents > 0 ? income.dependentCareFsa : 0);
             var childCareCredit = 0;
 
             if (childCareEligibleExpenses > 0) {
-                var incrementsOver = Math.ceil(childCareOverage / taxes.childAndDependentCarePhaseOutIncrement);
-                var childCareCreditRatio = Math.min(taxes.childAndDependentCareMaxRatio, Math.max(taxes.childAndDependentCareMaxRatio - incrementsOver * taxes.childAndDependentCarePhaseOutPerIncrement, taxes.childAndDependentCareMinRatio));
+                var incrementsOver = Math.ceil(childCareOverage / taxes.childAndDependentCare.phaseOut.increment);
+                var childCareCreditRatio = Math.min(taxes.childAndDependentCare.maxRatio, Math.max(taxes.childAndDependentCare.maxRatio - incrementsOver * taxes.childAndDependentCare.phaseOut.perIncrement, taxes.childAndDependentCare.minRatio));
                 childCareCredit = childCareEligibleExpenses * childCareCreditRatio;
             }
 
@@ -69,7 +69,7 @@
             }
 
             var taxableIncome = income.wageIncome + income.interest + income.shortTermCapitalGains + income.ordinaryDividends -
-                                deductions - exemptions * taxes.Exemption - (income.numDependents > 0 ? income.dependentCareFsa : 0);
+                                deductions - exemptions * taxes.exemption - (income.numDependents > 0 ? income.dependentCareFsa : 0);
 
 
             var taxesOwed = 0;
@@ -80,9 +80,9 @@
             var taxableInBracket = 0;
             var highestRate = 0;
 
-            for (bracketIndex = 0; bracketIndex < taxes.TaxBrackets.length; bracketIndex++) {
+            for (bracketIndex = 0; bracketIndex < taxes.federalBrackets.length; bracketIndex++) {
 
-                bracket = taxes.TaxBrackets[bracketIndex];
+                bracket = taxes.federalBrackets[bracketIndex];
                 switch (income.type) {
                     case 'single':
                         bottom = bracket.singleBottom;
@@ -117,11 +117,11 @@
 
             var longTermCapitalGainsTax = 0;
 
-            if (highestRate > taxes.LongTermCapitalGainsMaximumExemptRate) {
-                longTermCapitalGainsTax = taxes.LongTermCapitalGainsRate * income.longTermCapitalGains;
+            if (highestRate > taxes.longTermCapitalGainsMaximumExemptRate) {
+                longTermCapitalGainsTax = taxes.longTermCapitalGainsRate * income.longTermCapitalGains;
             }
 
-            taxesOwed = taxesOwed + longTermCapitalGainsTax + taxes.QualifiedDividendsRate * income.qualifiedDividends - childAndDependentCareCredit;
+            taxesOwed = taxesOwed + longTermCapitalGainsTax + taxes.qualifiedDividendsRate * income.qualifiedDividends - childAndDependentCareCredit;
 
 
 
@@ -135,26 +135,26 @@
 
             var phaseoutEligibleIncome = taxableIncome + income.longTermCapitalGains + income.qualifiedDividends;
 
-            var exemption = taxes.AmtExemption.single;
-            var phaseOutStart = taxes.AmtPhaseOutStart.single;
+            var exemption = taxes.amtExemption.single;
+            var phaseOutStart = taxes.amtPhaseOutStart.single;
 
             if (income.type === 'married') {
-                exemption = taxes.AmtExemption.married;
-                phaseOutStart = taxes.AmtPhaseOutStart.married;
+                exemption = taxes.amtExemption.married;
+                phaseOutStart = taxes.amtPhaseOutStart.married;
             }
 
             var amtOwed = 0;
 
             if (phaseoutEligibleIncome > phaseOutStart) {
-                exemption = Math.max(0, exemption - taxes.AmtPhaseOutRate * (phaseoutEligibleIncome - phaseOutStart));
+                exemption = Math.max(0, exemption - taxes.amtPhaseOutRate * (phaseoutEligibleIncome - phaseOutStart));
             }
 
             taxableIncome = taxableIncome - exemption;
 
-            if (taxableIncome > taxes.AmtHighRateStart) {
-                amtOwed = taxes.AmtHighRateStart * taxes.AmtLowRate + (taxableIncome - taxes.AmtHighRateStart) * taxes.AmtHighRate;
+            if (taxableIncome > taxes.amtHighRateStart) {
+                amtOwed = taxes.amtHighRateStart * taxes.amtLowRate + (taxableIncome - taxes.amtHighRateStart) * taxes.amtHighRate;
             } else {
-                amtOwed = taxableIncome * taxes.AmtLowRate;
+                amtOwed = taxableIncome * taxes.amtLowRate;
             }
 
             return Math.max(0, parseFloat(accounting.toFixed(amtOwed, 2)));
@@ -177,44 +177,44 @@
 
             switch (income.type) {
                 case 'single':
-                    exemption = taxes.MaExemption.single;
-                    interestDeductionCap = taxes.MaInterestDeductionCap.single;
+                    exemption = taxes.ma.exemption.single;
+                    interestDeductionCap = taxes.ma.interestDeductionCap.single;
                     break;
                 case 'hoh':
-                    exemption = taxes.MaExemption.hoh;
-                    interestDeductionCap = taxes.MaInterestDeductionCap.single;
+                    exemption = taxes.ma.exemption.hoh;
+                    interestDeductionCap = taxes.ma.interestDeductionCap.single;
                     break;
                 case 'married':
-                    exemption = taxes.MaExemption.married;
-                    interestDeductionCap = taxes.MaInterestDeductionCap.married;
+                    exemption = taxes.ma.exemption.married;
+                    interestDeductionCap = taxes.ma.interestDeductionCap.married;
                     break;
                 default:
                     throw 'Invalid type';
             }
 
-            exemption += taxes.MaDependentExemption * income.numDependents;
+            exemption += taxes.ma.dependentExemption * income.numDependents;
             exemption += Math.min(income.maInterest, interestDeductionCap);
 
             taxableIncome = taxableIncome - exemption;
 
             var payrollDeduction = Math.min(self.calculatePayrollTax(taxes, income), 2000);
-            var numDependents = Math.min(taxes.MaMaximumDependents, income.numDependents);
-            var dependentDeduction = taxes.MaPerChildMinimumDeduction * numDependents;
+            var numDependents = Math.min(taxes.ma.maximumDependents, income.numDependents);
+            var dependentDeduction = taxes.ma.perChildMinimumDeduction * numDependents;
             if (income.childCare - income.dependentCareFsa > dependentDeduction) {
-                dependentDeduction = Math.min(taxes.MaPerChildMaximumDeduction * numDependents, income.childCare - (income.numDependents > 0 ? income.dependentCareFsa : 0));
+                dependentDeduction = Math.min(taxes.ma.perChildMaximumDeduction * numDependents, income.childCare - (income.numDependents > 0 ? income.dependentCareFsa : 0));
             }
 
-            var rentalDeduction = Math.min(taxes.MaMaximumRentalDeduction, income.rent / 2);
+            var rentalDeduction = Math.min(taxes.ma.maximumRentalDeduction, income.rent / 2);
 
             var studentLoanDeduction = income.undergraduateStudentLoanInterest;
 
-            var commuterDeduction = Math.max(0, Math.min(income.commute - taxes.MaCommuterDeductionThreshold, taxes.MaMaximumCommuterDeduction));
+            var commuterDeduction = Math.max(0, Math.min(income.commute - taxes.ma.commuterDeductionThreshold, taxes.ma.maximumCommuterDeduction));
 
             taxableIncome = Math.max(0, taxableIncome - payrollDeduction - dependentDeduction - rentalDeduction - studentLoanDeduction - commuterDeduction);
             taxableIncome += income.outOfStateInterest;
 
-            var maTax = taxes.MaRate * taxableIncome;
-            maTax += taxes.MaShortTermCapitalGainsRate * income.shortTermCapitalGains + taxes.MaLongTermCapitalGainsRate * income.longTermCapitalGains;
+            var maTax = taxes.ma.rate * taxableIncome;
+            maTax += taxes.ma.shortTermCapitalGainsRate * income.shortTermCapitalGains + taxes.ma.longTermCapitalGainsRate * income.longTermCapitalGains;
 
             return parseFloat(accounting.toFixed(maTax, 2));
         };
@@ -225,21 +225,21 @@
             var additionalMedicareStart = Infinity;
             switch(income.type) {
                 case 'single':
-                    additionalMedicareStart = taxes.MedicareAdditionalStart.single;
+                    additionalMedicareStart = taxes.medicareAdditionalStart.single;
                     break;
                 case 'married':
-                    additionalMedicareStart = taxes.MedicareAdditionalStart.married;
+                    additionalMedicareStart = taxes.medicareAdditionalStart.married;
                     break;
                 case 'hoh':
-                    additionalMedicareStart = taxes.MedicareAdditionalStart.headOfHousehold;
+                    additionalMedicareStart = taxes.medicareAdditionalStart.headOfHousehold;
                     break;
                 default:
                     throw 'Invalid income type';
             }
 
             var taxableIncome = income.wageIncome - income.dependentCareFsa;
-            var payrollTax = Math.min(taxableIncome * taxes.SocialSecurityRate, taxes.SocialSecurityCap * taxes.SocialSecurityRate);
-            payrollTax += taxableIncome * taxes.MedicareRate + Math.max(0, (taxableIncome - additionalMedicareStart) * taxes.MedicareAdditionalRate);
+            var payrollTax = Math.min(taxableIncome * taxes.socialSecurityRate, taxes.socialSecurityCap * taxes.socialSecurityRate);
+            payrollTax += taxableIncome * taxes.medicareRate + Math.max(0, (taxableIncome - additionalMedicareStart) * taxes.medicareAdditionalRate);
 
             return parseFloat(accounting.toFixed(payrollTax, 2));
         };
