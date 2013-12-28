@@ -1,5 +1,7 @@
 ﻿function Income(settings) {
     // previous order: wageIncome, outOfStateInterest, maInterest, propertyTax, mortgageInterest, mortgageInsurance, charity, dependentCareFsa, numDependents, type, childCare, rent, underGraduateStudentLoanInterest, shortTermCapitalGains, longTermCapitalGains, ordinaryDividends, qualifiedDividends, stateTaxWithheld, previousStateTaxPayment, commute) {
+
+    settings = settings || {};
     var self = this;
     self.wageIncome = settings.wageIncome || 0;
     self.outOfStateInterest =settings.outOfStateInterest || 0;
@@ -27,3 +29,5 @@
     self.previousStateTaxPayment = settings.previousStateTaxPayment || 0; // this could be negative
     self.commute = settings.commute || 0;
 }
+
+if (module) { module.exports = Income; }
