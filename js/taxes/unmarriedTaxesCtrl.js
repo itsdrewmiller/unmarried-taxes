@@ -124,28 +124,30 @@ function UnmarriedTaxesCtrl($scope) {
         if (type === undefined) {
             type = 'single';
         }
-        var income = new Income(scopeIncome.wage,
-            getterFunc($scope.outOfStateInterest),
-            getterFunc($scope.maInterest),
-            getterFunc($scope.propertyTax),
-            getterFunc($scope.mortgageInterest),
-            getterFunc($scope.mortgageInsurance),
-            getterFunc($scope.charitableGiving),
-            getterFunc($scope.dependentCareFsa),
-            getterFunc($scope.numDependents, true),
-            type,
-            getterFunc($scope.childCare),
-            getterFunc($scope.rent),
-            scopeIncome.undergraduateLoanInterest,
-            getterFunc($scope.shortTermCapitalGains),
-            getterFunc($scope.longTermCapitalGains),
-            getterFunc($scope.ordinaryDividends),
-            getterFunc($scope.qualifiedDividends),
-            scopeIncome.stateTaxWithheld,
-            scopeIncome.lastYearStateTaxPayment,
-            getterFunc($scope.commute));
+        var income = new Income({
+            wageIncome: scopeIncome.wage,
+            outOfStateInterest: getterFunc($scope.outOfStateInterest),
+            maInterest: getterFunc($scope.maInterest),
+            propertyTax: getterFunc($scope.propertyTax),
+            mortgageInterest: getterFunc($scope.mortgageInterest),
+            mortgageInsurance: getterFunc($scope.mortgageInsurance),
+            charity: getterFunc($scope.charitableGiving),
+            dependentCareFsa: getterFunc($scope.dependentCareFsa),
+            numDependents: getterFunc($scope.numDependents, true),
+            type: type,
+            childCare: getterFunc($scope.childCare),
+            rent: getterFunc($scope.rent),
+            undergraduateStudentLoanInterest: scopeIncome.undergraduateLoanInterest,
+            shortTermCapitalGains: getterFunc($scope.shortTermCapitalGains),
+            longTermCapitalGains: getterFunc($scope.longTermCapitalGains),
+            ordinaryDividends: getterFunc($scope.ordinaryDividends),
+            qualifiedDividends: getterFunc($scope.qualifiedDividends),
+            stateTaxWithheld: scopeIncome.stateTaxWithheld,
+            previousYearStateTaxPayment: scopeIncome.lastYearStateTaxPayment,
+            commute: getterFunc($scope.commute)
+        });
 
-        if (income.Type === 'single' && taxCalculator.isHeadOfHousehold(income, $scope.mortgageInterest.total, $scope.propertyTax.total, $scope.mortgageInsurance.total)) { income.Type = 'hoh'; }
+        if (income.type === 'single' && taxCalculator.isHeadOfHousehold(income, $scope.mortgageInterest.total, $scope.propertyTax.total, $scope.mortgageInsurance.total)) { income.type = 'hoh'; }
 
         return income;
     };
