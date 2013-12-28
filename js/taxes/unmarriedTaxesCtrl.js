@@ -114,6 +114,7 @@ function UnmarriedTaxesCtrl($scope) {
     $scope.propertyTax = { total: 8028.91, percentSecond: 50 };
     $scope.mortgageInterest = { total: 24184.60, percentSecond: 50 };
     $scope.mortgageInsurance = { total: 4284.66 + 733.93, percentSecond: 50 };
+    $scope.otherHousehold = { total: 12000, percentSecond: 50 };
     $scope.charitableGiving = { total: 7441.28, percentSecond: 50 };
     $scope.childCare = { total: 1805, percentSecond: 50 };
     $scope.rent = { total: 0, percentSecond: 50 };
@@ -131,6 +132,7 @@ function UnmarriedTaxesCtrl($scope) {
             propertyTax: getterFunc($scope.propertyTax),
             mortgageInterest: getterFunc($scope.mortgageInterest),
             mortgageInsurance: getterFunc($scope.mortgageInsurance),
+            otherHousehold: getterFunc($scope.otherHousehold),
             charity: getterFunc($scope.charitableGiving),
             dependentCareFsa: getterFunc($scope.dependentCareFsa),
             numDependents: getterFunc($scope.numDependents, true),
@@ -147,7 +149,7 @@ function UnmarriedTaxesCtrl($scope) {
             commute: getterFunc($scope.commute)
         });
 
-        if (income.type === 'single' && taxCalculator.isHeadOfHousehold(income, $scope.mortgageInterest.total, $scope.propertyTax.total, $scope.mortgageInsurance.total)) { income.type = 'hoh'; }
+        if (income.type === 'single' && taxCalculator.isHeadOfHousehold(income, $scope.mortgageInterest.total, $scope.propertyTax.total, $scope.mortgageInsurance.total, $scope.otherHousehold.total)) { income.type = 'hoh'; }
 
         return income;
     };

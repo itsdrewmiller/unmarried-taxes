@@ -4,9 +4,9 @@
 
         var self = this;
 
-        self.isHeadOfHousehold = function (income, totalMortgageInterest, totalPropertyTax, totalMortgageInsurance) {
+        self.isHeadOfHousehold = function (income, totalMortgageInterest, totalPropertyTax, totalMortgageInsurance, totalOtherHousehold) {
             if (income.numDependents < 1) { return false; }
-            if (income.mortgageInterest + income.propertyTax + income.mortgageInsurance <= 0.5 * (totalMortgageInterest + totalPropertyTax + totalMortgageInsurance)) { return false; }
+            if (income.mortgageInterest + income.propertyTax + income.mortgageInsurance + income.otherHousehold <= 0.5 * (totalMortgageInterest + totalPropertyTax + totalMortgageInsurance + totalOtherHousehold)) { return false; }
             return true;
         };
 

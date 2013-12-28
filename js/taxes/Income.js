@@ -8,6 +8,7 @@
     self.propertyTax = settings.propertyTax || 0;
     self.mortgageInterest = settings.mortgageInterest || 0;
     self.mortgageInsurance = settings.mortgageInsurance || 0;
+    self.otherHousehold = settings.otherHousehold || 0;
     self.charity = settings.charity || 0;
     self.dependentCareFsa = settings.dependentCareFsa || 0;
     self.type = settings.type || 'single';
