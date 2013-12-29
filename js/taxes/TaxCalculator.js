@@ -8,7 +8,7 @@
         return income.wageIncome + income.qualifiedDividends + income.ordinaryDividends + income.shortTermCapitalGains + income.longTermCapitalGains - (income.numDependents > 0 ? income.dependentCareFsa : 0);
     },
     calculateMortgageInsuranceDeduction: function (taxes, income) {
-        var mortgageInsuranceOverage = self.calculateFederalAgi(income) - taxes.mortgageInsurancePhaseOut.start;
+        var mortgageInsuranceOverage = this.calculateFederalAgi(income) - taxes.mortgageInsurancePhaseOut.start;
         var mortgageInsuranceDeductionRatio = 1;
         if (mortgageInsuranceOverage > 0) {
             var incrementsOver = Math.ceil(mortgageInsuranceOverage / taxes.mortgageInsurancePhaseOut.increment);
@@ -17,7 +17,7 @@
         return mortgageInsuranceDeductionRatio * income.mortgageInsurance;
     },
     calculateChildAndDependentCareCredit: function (taxes, income) {
-        var childCareOverage = self.calculateFederalAgi(income) - taxes.childAndDependentCare.phaseOut.start;
+        var childCareOverage = this.calculateFederalAgi(income) - taxes.childAndDependentCare.phaseOut.start;
         var childCareEligibleExpenses = Math.min(taxes.childAndDependentCare.maxExpenses, income.numDependents * taxes.childAndDependentCare.expensesPerDependent, income.childCare) - (income.numDependents > 0 ? income.dependentCareFsa : 0);
         var childCareCredit = 0;
 
@@ -32,8 +32,8 @@
     },
     calculateRegularTax: function (taxes, income) {
 
-        var mortgageInsuranceDeduction = self.calculateMortgageInsuranceDeduction(taxes, income);
-        var childAndDependentCareCredit = self.calculateChildAndDependentCareCredit(taxes, income);
+        var mortgageInsuranceDeduction = this.calculateMortgageInsuranceDeduction(taxes, income);
+        var childAndDependentCareCredit = this.calculateChildAndDependentCareCredit(taxes, income);
 
         var deductions = income.mortgageInterest + income.charity + income.stateTaxWithheld + income.previousStateTaxPayment + income.propertyTax + mortgageInsuranceDeduction;
         var standardDeduction = 0;
@@ -152,7 +152,7 @@
         return Math.max(this.calculateAmt(taxes, income), this.calculateRegularTax(taxes, income));
     },
     calculateOverallTax: function (taxes, income) {
-        return self.calculateFederalIncomeTax(taxes, income) + self.calculateMaTax(taxes, income) + self.calculatePayrollTax(taxes, income);
+        return this.calculateFederalIncomeTax(taxes, income) + this.calculateMaTax(taxes, income) + this.calculatePayrollTax(taxes, income);
     },
     calculateMaTax: function (taxes, income) {
 
@@ -183,7 +183,7 @@
 
         taxableIncome = taxableIncome - exemption;
 
-        var payrollDeduction = Math.min(self.calculatePayrollTax(taxes, income), 2000);
+        var payrollDeduction = Math.min(this.calculatePayrollTax(taxes, income), 2000);
         var numDependents = Math.min(taxes.ma.maximumDependents, income.numDependents);
         var dependentDeduction = taxes.ma.perChildMinimumDeduction * numDependents;
         if (income.childCare - income.dependentCareFsa > dependentDeduction) {
@@ -230,4 +230,6 @@
     }
 };
 
-if (module) { module.exports = taxCalculator; }
+if (typeof module !== 'undefined') { 
+    module.exports = taxCalculator; 
+}

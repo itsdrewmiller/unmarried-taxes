@@ -30,4 +30,6 @@
     self.commute = settings.commute || 0;
 }
 
-if (module) { module.exports = Income; }
+if (typeof module !== 'undefined') { 
+    module.exports = Income; 
+}
