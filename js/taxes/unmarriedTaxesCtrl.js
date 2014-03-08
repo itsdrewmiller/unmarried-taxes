@@ -91,8 +91,10 @@ function getSlidebox(attributes, rounding) {
 
 function UnmarriedTaxesCtrl($scope) {
 
-    $scope.incomeFirst = { wage: 100000.00, undergraduateLoanInterest: 0, stateTaxWithheld: 5000.00, lastYearStateTaxPayment: 0 };
-    $scope.incomeSecond = { wage: 200000.00, undergraduateLoanInterest: 0, stateTaxWithheld: 10000.00, lastYearStateTaxPayment: 0 };
+    // sample values based on http://quickfacts.census.gov/qfd/states/25000.html
+
+    $scope.incomeFirst = { wage: 70970.00, undergraduateLoanInterest: 0, stateTaxWithheld: 3052.00, lastYearStateTaxPayment: 0 };
+    $scope.incomeSecond = { wage: 35485.00, undergraduateLoanInterest: 0, stateTaxWithheld: 1526.00, lastYearStateTaxPayment: 0 };
 
     var getSecond = function (sliderValues, isInt) {
         var value = 0.01 * sliderValues.percentSecond * sliderValues.total;
@@ -107,16 +109,22 @@ function UnmarriedTaxesCtrl($scope) {
     $scope.longTermCapitalGains = { total: 0, percentSecond: 50 };
     $scope.ordinaryDividends = { total: 0, percentSecond: 50 };
     $scope.qualifiedDividends = { total: 0, percentSecond: 50 };
-    $scope.outOfStateInterest = { total: 299.38, percentSecond: 50 };
-    $scope.maInterest = { total: 26.17, percentSecond: 50 };
-    $scope.dependentCareFsa = { total: 500, percentSecond: 0 };
+    $scope.outOfStateInterest = { total: 0, percentSecond: 50 };
+    $scope.maInterest = { total: 0, percentSecond: 50 };
+    $scope.dependentCareFsa = { total: 5000, percentSecond: 0 };
     $scope.numDependents = { total: 1, percentSecond: 100 };
-    $scope.propertyTax = { total: 8028.91, percentSecond: 50 };
-    $scope.mortgageInterest = { total: 24184.60, percentSecond: 50 };
-    $scope.mortgageInsurance = { total: 4284.66 + 733.93, percentSecond: 50 };
-    $scope.otherHousehold = { total: 12000, percentSecond: 50 };
-    $scope.charitableGiving = { total: 7441.28, percentSecond: 50 };
-    $scope.childCare = { total: 1805, percentSecond: 50 };
+
+    // http://xfinity.comcast.net/slideshow/finance-propertytaxes/massachusetts/
+    $scope.propertyTax = { total: 3254, percentSecond: 50 };
+
+
+    $scope.mortgageInterest = { total: 8000, percentSecond: 50 };
+    $scope.mortgageInsurance = { total: 0, percentSecond: 50 };
+    $scope.otherHousehold = { total: 4000, percentSecond: 50 };
+    $scope.charitableGiving = { total: 0, percentSecond: 50 };
+
+    // http://www.huffingtonpost.com/2013/11/05/child-care-costs_n_4215659.html
+    $scope.childCare = { total: 16430, percentSecond: 50 };
     $scope.rent = { total: 0, percentSecond: 50 };
     $scope.commute = { total: 0, percentSecond: 50 };
 
