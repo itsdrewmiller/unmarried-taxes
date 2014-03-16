@@ -40,7 +40,7 @@
     self.amtPhaseOutStart = { single: 115400, married: 153900 };
     self.amtPhaseOutRate = 0.25;
 
-    self.socialSecurityRate = 0.042;
+    self.socialSecurityRate = 0.062;
     self.socialSecurityCap  = 113700;
     self.medicareRate = 0.0145;
     self.medicareAdditionalRate = 0.009;
