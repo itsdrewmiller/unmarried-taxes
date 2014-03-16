@@ -1,6 +1,12 @@
 ﻿var taxCalculator = {
     isHeadOfHousehold: function (income, totalMortgageInterest, totalPropertyTax, totalMortgageInsurance, totalOtherHousehold) {
         if (income.numDependents < 1) { return false; }
+        
+        totalMortgageInsurance = totalMortgageInsurance || 0;
+        totalPropertyTax = totalPropertyTax || 0;
+        totalMortgageInsurance = totalMortgageInsurance || 0;
+        totalOtherHousehold = totalOtherHousehold || 0;
+        
         if (income.mortgageInterest + income.propertyTax + income.mortgageInsurance + income.otherHousehold <= 0.5 * (totalMortgageInterest + totalPropertyTax + totalMortgageInsurance + totalOtherHousehold)) { return false; }
         return true;
     },
