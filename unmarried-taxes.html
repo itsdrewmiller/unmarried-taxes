@@ -57,9 +57,6 @@
                 <tr currency-slidebox id="commute" label="Commuting Expenses" ng-model="commute" />
 
             </table>
-            
-            <div style="float: left;">
-            <span class="header">Savings over Married: {{ GetOverallMarried() - GetOverallFirst() - GetOverallSecond() | currency }}</span>
 
             <table>
                 <tr>
@@ -67,42 +64,41 @@
                     <th>"Adam"</th>
                     <th>"Steve"</th>
                     <th>Married</th>
-                    <th>Total</th>
                 </tr>
                 <tr>
                     <td>Federal (Regular)</td>
                     <td>{{GetFederalRegularFirst() | currency}}</td>
                     <td>{{GetFederalRegularSecond() | currency}}</td>
                     <td>{{GetFederalRegularMarried() | currency}}</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Federal (AMT)</td>
                     <td>{{GetFederalAmtFirst() | currency}}</td>
                     <td>{{GetFederalAmtSecond() | currency}}</td>
                     <td>{{GetFederalAmtMarried() | currency}}</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Federal (Payroll)</td>
                     <td>{{GetFederalPayrollFirst() | currency}}</td>
                     <td>{{GetFederalPayrollSecond() | currency}}</td>
                     <td>{{GetFederalPayrollFirst() + GetFederalPayrollSecond() | currency}}</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>State (MA)</td>
                     <td>{{GetStateMaFirst() | currency}}</td>
                     <td>{{GetStateMaSecond() | currency}}</td>
                     <td>{{GetStateMaMarried() | currency}}</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Total</td>
                     <td>{{GetOverallFirst() | currency}}</td>
                     <td>{{GetOverallSecond() | currency}}</td>
                     <td>{{GetOverallMarried() | currency}}</td>
-                    <td class="highlight">{{GetOverallFirst() + GetOverallSecond() | currency}}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="header summary">
+                        Savings over Married: {{ GetOverallMarried() - GetOverallFirst() - GetOverallSecond() | currency }}
+                    </td>
                 </tr>
             </table>
         </div>
