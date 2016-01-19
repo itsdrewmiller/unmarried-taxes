@@ -52,7 +52,7 @@
     self.longTermCapitalGains = {
         levels: [0.15, 0.396, Infinity],
         rates: [0, 0.15, 0.20]
-    }
+    };
 
     self.ma = {
         rate: 0.0515,
