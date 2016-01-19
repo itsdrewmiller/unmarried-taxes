@@ -93,8 +93,18 @@ function UnmarriedTaxesCtrl($scope) {
 
     // sample values based on http://quickfacts.census.gov/qfd/states/25000.html
 
-    $scope.incomeFirst = { wage: 70970.00, undergraduateLoanInterest: 0, stateTaxWithheld: 3052.00, lastYearStateTaxPayment: 0 };
-    $scope.incomeSecond = { wage: 35485.00, undergraduateLoanInterest: 0, stateTaxWithheld: 1526.00, lastYearStateTaxPayment: 0 };
+    $scope.incomeFirst = { 
+        wage: income1.wageIncome, 
+        undergraduateLoanInterest: income1.undergraduateStudentLoanInterest, 
+        stateTaxWithheld: income1.stateTaxWithheld, 
+        lastYearStateTaxPayment: income1.previousStateTaxPayment 
+    };
+    $scope.incomeSecond = { 
+        wage: income2.wageIncome, 
+        undergraduateLoanInterest: income2.undergraduateStudentLoanInterest, 
+        stateTaxWithheld: income2.stateTaxWithheld, 
+        lastYearStateTaxPayment: income2.previousStateTaxPayment 
+    };
 
     var getSecond = function (sliderValues, isInt) {
         var value = 0.01 * sliderValues.percentSecond * sliderValues.total;
@@ -105,28 +115,28 @@ function UnmarriedTaxesCtrl($scope) {
     };
     var getFirst = function(sliderValues, isInt) { return sliderValues.total-getSecond(sliderValues, isInt); };
 
-    $scope.shortTermCapitalGains = { total: 0, percentSecond: 50 };
-    $scope.longTermCapitalGains = { total: 0, percentSecond: 50 };
-    $scope.ordinaryDividends = { total: 0, percentSecond: 50 };
-    $scope.qualifiedDividends = { total: 0, percentSecond: 50 };
-    $scope.outOfStateInterest = { total: 0, percentSecond: 50 };
-    $scope.maInterest = { total: 0, percentSecond: 50 };
-    $scope.dependentCareFsa = { total: 5000, percentSecond: 0 };
-    $scope.numDependents = { total: 1, percentSecond: 100 };
+    $scope.shortTermCapitalGains = { total: income1.shortTermCapitalGains + income2.shortTermCapitalGains, percentSecond: 50 };
+    $scope.longTermCapitalGains = { total: income1.longTermCapitalGains + income2.longTermCapitalGains, percentSecond: 50 };
+    $scope.ordinaryDividends = { total: income1.ordinaryDividends + income2.ordinaryDividends, percentSecond: 50 };
+    $scope.qualifiedDividends = { total: income1.qualifiedDividends + income2.qualifiedDividends, percentSecond: 50 };
+    $scope.outOfStateInterest = { total: income1.outOfStateInterest + income2.outOfStateInterest, percentSecond: 50 };
+    $scope.maInterest = { total: income1.maInterest + income2.maInterest, percentSecond: 50 };
+    $scope.dependentCareFsa = { total: income1.dependentCareFsa + income2.dependentCareFsa, percentSecond: 0 };
+    $scope.numDependents = { total: income1.numDependents + income2.numDependents, percentSecond: 100 };
 
     // http://xfinity.comcast.net/slideshow/finance-propertytaxes/massachusetts/
-    $scope.propertyTax = { total: 3254, percentSecond: 50 };
+    $scope.propertyTax = { total: income1.propertyTax + income2.propertyTax, percentSecond: 50 };
 
 
-    $scope.mortgageInterest = { total: 8000, percentSecond: 50 };
-    $scope.mortgageInsurance = { total: 0, percentSecond: 50 };
-    $scope.otherHousehold = { total: 4000, percentSecond: 50 };
-    $scope.charitableGiving = { total: 0, percentSecond: 50 };
+    $scope.mortgageInterest = { total: income1.mortgageInterest + income2.mortgageInterest, percentSecond: 50 };
+    $scope.mortgageInsurance = { total: income1.mortgageInsurance + income2.mortgageInsurance, percentSecond: 50 };
+    $scope.otherHousehold = { total: income1.otherHousehold + income2.otherHousehold, percentSecond: 50 };
+    $scope.charitableGiving = { total: income1.charity + income2.charity, percentSecond: 50 };
 
     // http://www.huffingtonpost.com/2013/11/05/child-care-costs_n_4215659.html
-    $scope.childCare = { total: 16430, percentSecond: 50 };
-    $scope.rent = { total: 0, percentSecond: 50 };
-    $scope.commute = { total: 0, percentSecond: 50 };
+    $scope.childCare = { total: income1.childCare + income2.childCare, percentSecond: 50 };
+    $scope.rent = { total: income1.rent + income2.rent, percentSecond: 50 };
+    $scope.commute = { total: income1.commute + income2.commute, percentSecond: 50 };
 
     var getIncome = function (getterFunc, scopeIncome, type) {
 

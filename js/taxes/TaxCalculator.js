@@ -44,17 +44,21 @@
         var deductions = income.mortgageInterest + income.charity + income.stateTaxWithheld + income.previousStateTaxPayment + income.propertyTax + mortgageInsuranceDeduction;
         var standardDeduction = 0;
         var exemptions = (1 + income.numDependents);
+        var exemptionPhaseoutStart = 0;
 
         switch (income.type) {
             case 'single':
                 standardDeduction = taxes.standardDeduction.single;
+                exemptionPhaseoutStart = taxes.exemptionPhaseout.start.single;
                 break;
             case 'married':
                 standardDeduction = taxes.standardDeduction.married;
+                exemptionPhaseoutStart = taxes.exemptionPhaseout.start.married;
                 exemptions += 1;
                 break;
             case 'hoh':
                 standardDeduction = taxes.standardDeduction.headOfHousehold;
+                exemptionPhaseoutStart = taxes.exemptionPhaseout.start.headOfHousehold;
                 break;
             default:
                 throw 'Invalid income type';
@@ -64,9 +68,11 @@
             deductions = standardDeduction;
         }
 
-        var taxableIncome = income.wageIncome + income.interest + income.shortTermCapitalGains + income.ordinaryDividends -
-                            deductions - exemptions * taxes.exemption - (income.numDependents > 0 ? income.dependentCareFsa : 0);
+        var exemptionFactor = (this.calculateFederalAgi(income) - exemptionPhaseoutStart)/taxes.exemptionPhaseout.increment*taxes.exemptionPhaseout.perIncrement;
+        exemptionFactor = Math.min(1, Math.max(0,exemptionFactor));
 
+        var taxableIncome = income.wageIncome + income.interest + income.shortTermCapitalGains + income.ordinaryDividends -
+                            deductions - exemptions * taxes.exemption * exemptionFactor - (income.numDependents > 0 ? income.dependentCareFsa : 0);
 
         var taxesOwed = 0;
         var bracket = null;
@@ -111,15 +117,15 @@
 
         }
 
-        var longTermCapitalGainsTax = 0;
 
-        if (highestRate > taxes.longTermCapitalGainsMaximumExemptRate) {
-            longTermCapitalGainsTax = taxes.longTermCapitalGainsRate * income.longTermCapitalGains;
+        // figure out which long term rate to apply
+        var level = 0;
+        while (taxes.longTermCapitalGains.levels[level] < highestRate) {
+            level++;
         }
+        var ltcgRate = taxes.longTermCapitalGains.rates[level];
 
-        taxesOwed = taxesOwed + longTermCapitalGainsTax + taxes.qualifiedDividendsRate * income.qualifiedDividends - childAndDependentCareCredit;
-
-
+        taxesOwed = taxesOwed + ltcgRate * (income.longTermCapitalGains + income.qualifiedDividends) - childAndDependentCareCredit;
 
         return parseFloat(accounting.toFixed(taxesOwed, 2));
     },
