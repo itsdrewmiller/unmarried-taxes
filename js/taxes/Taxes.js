@@ -16,6 +16,12 @@
         perIncrement: 0.02
     };
 
+    self.deductionPhaseout = { 
+        start: { single: 258250, headOfHousehold: 284050, married: 309900},
+        totalPercentage: 0.2,
+        diffPercentage: 0.03
+    };
+
     self.mortgageInsurancePhaseOut = {
         start: 100000,
         increment: 1000,

@@ -93,7 +93,7 @@ bnb.iteration = function (status) {
     }
 };
 
-bnb.tolerance = 100;
+bnb.tolerance = 300;
 bnb.loopAbort = 10000000;
 
 bnb.start(function (err, bnb) {
