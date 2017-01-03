@@ -74,7 +74,7 @@
         if (agi > deductionPhaseoutStart) {
             var diffReduction = taxes.deductionPhaseout.diffPercentage * (agi-deductionPhaseoutStart);
             var totalReduction = taxes.deductionPhaseout.totalPercentage * deductions;
-            deductions -= (diffReduction > totalReduction) ? totalReduction : diffReduction;
+            deductions -= Math.min(diffReduction, totalReduction);
         }
 
         if (deductions < standardDeduction) {
