@@ -1,26 +1,26 @@
 ﻿function Taxes() {
     var self = this;
     self.federalBrackets = [
-        { rate: 0.1, singleBottom: 0, singleTop: 9275, hohBottom: 0, hohTop: 13250, marriedBottom: 0, marriedTop: 18550 },
-        { rate: 0.15, singleBottom: 9275, singleTop: 37650, hohBottom: 13250, hohTop: 50400, marriedBottom: 18550, marriedTop: 75300 },
-        { rate: 0.25, singleBottom: 37650, singleTop: 91150, hohBottom: 50400, hohTop: 130150, marriedBottom: 75300, marriedTop: 151900 },
-        { rate: 0.28, singleBottom: 91150, singleTop: 190150, hohBottom: 130150, hohTop: 210800, marriedBottom: 151900, marriedTop: 231450 },
-        { rate: 0.33, singleBottom: 190150, singleTop: 413350, hohBottom: 210800, hohTop: 413350, marriedBottom: 231450, marriedTop: 413350 },
-        { rate: 0.35, singleBottom: 413350, singleTop: 415050, hohBottom: 413350, hohTop: 441000, marriedBottom: 413350, marriedTop: 466950 },
-        { rate: 0.396, singleBottom: 415050, singleTop: Infinity, hohBottom: 441000, hohTop: Infinity, marriedBottom: 466950, marriedTop: Infinity }];
-    self.standardDeduction = { single: 6300, headOfHousehold: 9300, married: 12600 };
+        { rate: 0.1, singleBottom: 0, singleTop: 9325, hohBottom: 0, hohTop: 13350, marriedBottom: 0, marriedTop: 18650 },
+        { rate: 0.15, singleBottom: 9325, singleTop: 37950, hohBottom: 13350, hohTop: 50800, marriedBottom: 18650, marriedTop: 75900 },
+        { rate: 0.25, singleBottom: 37950, singleTop: 91900, hohBottom: 50800, hohTop: 131200, marriedBottom: 75900, marriedTop: 153100 },
+        { rate: 0.28, singleBottom: 91900, singleTop: 191650, hohBottom: 131200, hohTop: 212500, marriedBottom: 153100, marriedTop: 233350 },
+        { rate: 0.33, singleBottom: 191650, singleTop: 416700, hohBottom: 212500, hohTop: 416700, marriedBottom: 233350, marriedTop: 416700 },
+        { rate: 0.35, singleBottom: 416700, singleTop: 418400, hohBottom: 416700, hohTop: 444500, marriedBottom: 416700, marriedTop: 470700 },
+        { rate: 0.396, singleBottom: 418400, singleTop: Infinity, hohBottom: 444500, hohTop: Infinity, marriedBottom: 470700, marriedTop: Infinity }];
+    self.standardDeduction = { single: 6350, headOfHousehold: 9350, married: 12700 };
     self.exemption = 4050;
 
     // PEP
     self.exemptionPhaseout = { 
-        start: { single: 259400, headOfHousehold: 285350, married: 311300},
+        start: { single: 261500, headOfHousehold: 287650, married: 313800},
         increment: 2500,
         perIncrement: 0.02
     };
 
     // Pease
     self.deductionPhaseout = { 
-        start: { single: 259400, headOfHousehold: 285350, married: 311300},
+        start: { single: 261500, headOfHousehold: 287650, married: 313800},
         totalPercentage: 0.2,
         diffPercentage: 0.03
     };
@@ -45,15 +45,15 @@
 
     self.amtLowRate = 0.26;
     self.amtHighRate = 0.28;
-    self.amtHighRateStart = 186300;
+    self.amtHighRateStart = 187800;
 
-    self.amtExemption = { single: 53900, married: 83800};
+    self.amtExemption = { single: 54300, married: 84500};
 
-    self.amtPhaseOutStart = { single: 119700, married: 159700 };
+    self.amtPhaseOutStart = { single: 120700, married: 160900 };
     self.amtPhaseOutRate = 0.25;
 
     self.socialSecurityRate = 0.062;
-    self.socialSecurityCap  = 118500;
+    self.socialSecurityCap  = 127200;
     self.medicareRate = 0.0145;
     self.medicareAdditionalRate = 0.009;
     self.medicareAdditionalStart = { single: 200000, headOfHousehold: 200000, married: 250000};
@@ -65,7 +65,7 @@
     };
 
     self.ma = {
-        rate: 0.0515,
+        rate: 0.051,
         exemption: { single: 4400, hoh: 6800, married: 8800 },
         dependentExemption: 1000,
         interestDeductionCap: { single: 100, married: 200 },
@@ -77,7 +77,7 @@
         commuterDeductionThreshold: 150,
         maximumCommuterDeduction: 750,
         shortTermCapitalGainsRate: 0.12,
-        longTermCapitalGainsRate: 0.0515
+        longTermCapitalGainsRate: 0.051
     };
     // not updated for 2016 yet
 } 
