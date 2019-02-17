@@ -2,7 +2,8 @@
 var outerBox = { vars: [] };
 
 //
-var maxMortgageInterest = income1.mortgageInterest + income2.mortgageInterest;
+var maxMortgageInterest1 = income1.mortgageInterest1 + income2.mortgageInterest1;
+var maxMortgageInterest2 = income1.mortgageInterest2 + income2.mortgageInterest2;
 var maxPropertyTax = income1.propertyTax + income2.propertyTax;
 var maxCharity = income1.charity + income2.charity;
 var maxDependents = income1.numDependents + income2.numDependents;
@@ -10,7 +11,8 @@ var maxMortgageInsurance = income1.mortgageInsurance + income2.mortgageInsurance
 var maxOtherHousehold = income1.otherHousehold + income2.otherHousehold;
 
 
-outerBox.mortgageInterest = { min: 0, max: maxMortgageInterest };
+outerBox.mortgageInterest1 = { min: 0, max: maxMortgageInterest1 };
+outerBox.mortgageInterest2 = { min: 0, max: maxMortgageInterest2 };
 outerBox.dependents = { min: 0, max: maxDependents, splitWeight: 100000, isDiscrete: true };
 outerBox.propertyTax = { min: 0, max: maxPropertyTax };
 outerBox.charity = { min: 0, max: maxCharity };
@@ -30,8 +32,11 @@ var taxes = new Taxes();
 
 bnb.lowerBound = function (box) {
 
-    income1.mortgageInterest = maxMortgageInterest - box.mortgageInterest.min;
-    income2.mortgageInterest = box.mortgageInterest.max;
+    income1.mortgageInterest1 = maxMortgageInterest1 - box.mortgageInterest1.min;
+    income2.mortgageInterest1 = box.mortgageInterest1.max;
+
+    income1.mortgageInterest2 = maxMortgageInterest2 - box.mortgageInterest2.min;
+    income2.mortgageInterest2 = box.mortgageInterest2.max;
 
     income1.charity = maxCharity - box.charity.min;
     income2.charity = box.charity.max;
@@ -48,8 +53,8 @@ bnb.lowerBound = function (box) {
     income1.otherHousehold = maxOtherHousehold - box.otherHousehold.min;
     income2.otherHousehold = box.otherHousehold.max;
 
-    income1.type = taxCalculator.isHeadOfHousehold(income1, maxMortgageInterest, maxPropertyTax, maxMortgageInsurance, maxOtherHousehold) ? 'hoh' : 'single';
-    income2.type = taxCalculator.isHeadOfHousehold(income2, maxMortgageInterest, maxPropertyTax, maxMortgageInsurance, maxOtherHousehold) ? 'hoh' : 'single';
+    income1.type = taxCalculator.isHeadOfHousehold(income1, maxMortgageInterest1+maxMortgageInterest2, maxPropertyTax, maxMortgageInsurance, maxOtherHousehold) ? 'hoh' : 'single';
+    income2.type = taxCalculator.isHeadOfHousehold(income2, maxMortgageInterest1+maxMortgageInterest2, maxPropertyTax, maxMortgageInsurance, maxOtherHousehold) ? 'hoh' : 'single';
 
     var lower = taxCalculator.calculateOverallTax(taxes, income1) + taxCalculator.calculateOverallTax(taxes, income2);
     return lower;
@@ -58,8 +63,11 @@ bnb.lowerBound = function (box) {
 
 bnb.upperBound = function (box) {
 
-    income1.mortgageInterest = maxMortgageInterest - box.mortgageInterest.max;
-    income2.mortgageInterest = box.mortgageInterest.min;
+    income1.mortgageInterest1 = maxMortgageInterest1 - box.mortgageInterest1.max;
+    income2.mortgageInterest1 = box.mortgageInterest1.min;
+
+    income1.mortgageInterest2 = maxMortgageInterest2 - box.mortgageInterest2.max;
+    income2.mortgageInterest2 = box.mortgageInterest2.min;
 
     income1.charity = maxCharity - box.charity.max;
     income2.charity = box.charity.min;
@@ -76,8 +84,8 @@ bnb.upperBound = function (box) {
     income1.otherHousehold = maxOtherHousehold - box.otherHousehold.max;
     income2.otherHousehold = box.otherHousehold.min;
 
-    income1.type = taxCalculator.isHeadOfHousehold(income1, maxMortgageInterest, maxPropertyTax, maxMortgageInsurance, maxOtherHousehold) ? 'hoh' : 'single';
-    income2.type = taxCalculator.isHeadOfHousehold(income2, maxMortgageInterest, maxPropertyTax, maxMortgageInsurance, maxOtherHousehold) ? 'hoh' : 'single';
+    income1.type = taxCalculator.isHeadOfHousehold(income1, maxMortgageInterest1+maxMortgageInterest2, maxPropertyTax, maxMortgageInsurance, maxOtherHousehold) ? 'hoh' : 'single';
+    income2.type = taxCalculator.isHeadOfHousehold(income2, maxMortgageInterest1+maxMortgageInterest2, maxPropertyTax, maxMortgageInsurance, maxOtherHousehold) ? 'hoh' : 'single';
 
     var upper = taxCalculator.calculateOverallTax(taxes, income1) + taxCalculator.calculateOverallTax(taxes, income2);
     return upper;

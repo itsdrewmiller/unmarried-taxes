@@ -11,7 +11,8 @@ describe('TaxCalculator', function() {
 		var testIncome = new Income({
 			numDependents: 1,
 			mortgageInsurance: 4,
-			mortgageInterest: 4,
+			mortgageInterest1: 4,
+			mortgageInterest2: 4,
 			propertyTax: 4,
 			otherHousehold: 4
 		});

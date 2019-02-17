@@ -128,7 +128,8 @@ function UnmarriedTaxesCtrl($scope) {
     $scope.propertyTax = { total: income1.propertyTax + income2.propertyTax, percentSecond: 50 };
 
 
-    $scope.mortgageInterest = { total: income1.mortgageInterest + income2.mortgageInterest, percentSecond: 50 };
+    $scope.mortgageInterest1 = { total: income1.mortgageInterest1 + income2.mortgageInterest1, percentSecond: 50 };
+    $scope.mortgageInterest2 = { total: income1.mortgageInterest2 + income2.mortgageInterest2, percentSecond: 50 };
     $scope.mortgageInsurance = { total: income1.mortgageInsurance + income2.mortgageInsurance, percentSecond: 50 };
     $scope.otherHousehold = { total: income1.otherHousehold + income2.otherHousehold, percentSecond: 50 };
     $scope.charitableGiving = { total: income1.charity + income2.charity, percentSecond: 50 };
@@ -148,7 +149,8 @@ function UnmarriedTaxesCtrl($scope) {
             outOfStateInterest: getterFunc($scope.outOfStateInterest),
             maInterest: getterFunc($scope.maInterest),
             propertyTax: getterFunc($scope.propertyTax),
-            mortgageInterest: getterFunc($scope.mortgageInterest),
+            mortgageInterest1: getterFunc($scope.mortgageInterest1),
+            mortgageInterest2: getterFunc($scope.mortgageInterest2),
             mortgageInsurance: getterFunc($scope.mortgageInsurance),
             otherHousehold: getterFunc($scope.otherHousehold),
             charity: getterFunc($scope.charitableGiving),
@@ -167,7 +169,7 @@ function UnmarriedTaxesCtrl($scope) {
             commute: getterFunc($scope.commute)
         });
 
-        if (income.type === 'single' && taxCalculator.isHeadOfHousehold(income, $scope.mortgageInterest.total, $scope.propertyTax.total, $scope.mortgageInsurance.total, $scope.otherHousehold.total)) { income.type = 'hoh'; }
+        if (income.type === 'single' && taxCalculator.isHeadOfHousehold(income, $scope.mortgageInterest1.total + $scope.mortgageInterest2.total, $scope.propertyTax.total, $scope.mortgageInsurance.total, $scope.otherHousehold.total)) { income.type = 'hoh'; }
 
         return income;
     };

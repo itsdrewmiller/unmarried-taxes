@@ -8,8 +8,11 @@
     self.maInterest = settings.maInterest || 0;
     self.interest = settings.outOfStateInterest + settings.maInterest || 0;
     self.propertyTax = settings.propertyTax || 0;
-    self.mortgageInterest = settings.mortgageInterest || 0;
     self.mortgageInsurance = settings.mortgageInsurance || 0;
+    self.mortgageInterest1 = settings.mortgageInterest1 || 0;
+    self.mortgageAmount1 = settings.mortgageAmount1 || 100000;
+    self.mortgageInterest2 = settings.mortgageInterest2 || 0;
+    self.mortgageAmount2 = settings.mortgageAmount2 || 100000;
     self.otherHousehold = settings.otherHousehold || 0;
     self.charity = settings.charity || 0;
     self.dependentCareFsa = settings.dependentCareFsa || 0;

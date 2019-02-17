@@ -1,13 +1,13 @@
 ﻿var taxCalculator = {
     isHeadOfHousehold: function (income, totalMortgageInterest, totalPropertyTax, totalMortgageInsurance, totalOtherHousehold) {
         if (income.numDependents < 1) { return false; }
-        
+
         totalMortgageInsurance = totalMortgageInsurance || 0;
         totalPropertyTax = totalPropertyTax || 0;
         totalMortgageInsurance = totalMortgageInsurance || 0;
         totalOtherHousehold = totalOtherHousehold || 0;
-        
-        if (income.mortgageInterest + income.propertyTax + income.mortgageInsurance + income.otherHousehold <= 0.5 * (totalMortgageInterest + totalPropertyTax + totalMortgageInsurance + totalOtherHousehold)) { return false; }
+
+        if (income.mortgageInterest1 + income.mortgageInterest2 + income.propertyTax + income.mortgageInsurance + income.otherHousehold <= 0.5 * (totalMortgageInterest + totalPropertyTax + totalMortgageInsurance + totalOtherHousehold)) { return false; }
         return true;
     },
     calculateFederalAgi: function (income) {
@@ -59,14 +59,18 @@
                 throw 'Invalid income type';
         }
 
-        var deductions = income.mortgageInterest + income.charity + Math.min(taxes.stateAndLocalDeductionCap, income.stateTaxWithheld + income.previousStateTaxPayment + income.propertyTax) + mortgageInsuranceDeduction;
+        var cappedSalt = Math.min(taxes.stateAndLocalDeductionCap, income.stateTaxWithheld + income.previousStateTaxPayment + income.propertyTax);
+
+        var deductions = income.charity + cappedSalt + mortgageInsuranceDeduction + this.getTotalMortgageInterest(taxes, income);
 
         if (deductions < standardDeduction) {
             deductions = standardDeduction;
         }
 
         var taxableIncome = income.wageIncome + income.interest + income.shortTermCapitalGains + income.ordinaryDividends -
-                            deductions - (income.numDependents > 0 ? income.dependentCareFsa : 0);
+            deductions - (income.numDependents > 0 ? income.dependentCareFsa : 0);
+
+        console.log('Income: ' + taxableIncome);
 
         var taxesOwed = 0;
         var bracket = null;
@@ -111,6 +115,8 @@
 
         }
 
+        console.log('Owed: ' + taxesOwed);
+
 
         // figure out which long term rate to apply
         var level = 0;
@@ -123,10 +129,19 @@
 
         return parseFloat(accounting.toFixed(taxesOwed, 2));
     },
+    getTotalMortgageInterest: function (taxes, income) {
+        // TODO figure out best way to factor in 750k cap
+        var mortgageInterest1Fraction = Math.min(1, 0) * income.mortgageInterest1;
+        var mortgageInterest2Fraction = Math.min(1, 0) * income.mortgageInterest2;
+
+        return mortgageInterest1Fraction + mortgageInterest2Fraction;
+    },
     calculateAmt: function (taxes, income) {
 
+        var totalMortgageInterest = this.getTotalMortgageInterest(taxes, income);
+
         var taxableIncome = income.wageIncome + income.interest + income.shortTermCapitalGains + income.ordinaryDividends -
-                            income.mortgageInterest - income.charity - (income.numDependents > 0 ? income.dependentCareFsa : 0);
+            totalMortgageInterest - income.charity - (income.numDependents > 0 ? income.dependentCareFsa : 0);
 
         var phaseoutEligibleIncome = taxableIncome + income.longTermCapitalGains + income.qualifiedDividends;
 
@@ -214,7 +229,7 @@
 
 
         var additionalMedicareStart = Infinity;
-        switch(income.type) {
+        switch (income.type) {
             case 'single':
                 additionalMedicareStart = taxes.medicareAdditionalStart.single;
                 break;
@@ -236,6 +251,6 @@
     }
 };
 
-if (typeof module !== 'undefined') { 
-    module.exports = taxCalculator; 
+if (typeof module !== 'undefined') {
+    module.exports = taxCalculator;
 }
