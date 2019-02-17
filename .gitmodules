@@ -1,6 +1,6 @@
 [submodule "js/accounting"]
 	path = js/accounting
-	url = https://github.com/josscrowcroft/accounting.js.git
+url= https://github.com/openexchangerates/accounting.js.git
 [submodule "js/branchAndBound"]
 	path = js/branchAndBound
 	url = https://github.com/itsdrewmiller/branchAndBound.js.git
