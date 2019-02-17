@@ -44,48 +44,29 @@
         var childAndDependentCareCredit = this.calculateChildAndDependentCareCredit(taxes, income);
 
         var standardDeduction = 0;
-        var exemptions = (1 + income.numDependents);
-        var exemptionPhaseoutStart = 0;
-        var deductionPhaseoutStart = 0;
 
         switch (income.type) {
             case 'single':
                 standardDeduction = taxes.standardDeduction.single;
-                exemptionPhaseoutStart = taxes.exemptionPhaseout.start.single;
-                deductionPhaseoutStart = taxes.deductionPhaseout.start.single;
                 break;
             case 'married':
                 standardDeduction = taxes.standardDeduction.married;
-                exemptionPhaseoutStart = taxes.exemptionPhaseout.start.married;
-                deductionPhaseoutStart = taxes.deductionPhaseout.start.married;
-                exemptions += 1;
                 break;
             case 'hoh':
                 standardDeduction = taxes.standardDeduction.headOfHousehold;
-                exemptionPhaseoutStart = taxes.exemptionPhaseout.start.headOfHousehold;
-                deductionPhaseoutStart = taxes.deductionPhaseout.start.headOfHousehold;
                 break;
             default:
                 throw 'Invalid income type';
         }
 
-        var deductions = income.mortgageInterest + income.charity + income.stateTaxWithheld + income.previousStateTaxPayment + income.propertyTax + mortgageInsuranceDeduction;
-
-        if (agi > deductionPhaseoutStart) {
-            var diffReduction = taxes.deductionPhaseout.diffPercentage * (agi-deductionPhaseoutStart);
-            var totalReduction = taxes.deductionPhaseout.totalPercentage * deductions;
-            deductions -= Math.min(diffReduction, totalReduction);
-        }
+        var deductions = income.mortgageInterest + income.charity + Math.min(taxes.stateAndLocalDeductionCap, income.stateTaxWithheld + income.previousStateTaxPayment + income.propertyTax) + mortgageInsuranceDeduction;
 
         if (deductions < standardDeduction) {
             deductions = standardDeduction;
         }
 
-        var exemptionIncrements = Math.ceil((agi - exemptionPhaseoutStart)/taxes.exemptionPhaseout.increment);
-        var exemptionFactor = Math.min(1, Math.max(0, 1-exemptionIncrements*taxes.exemptionPhaseout.perIncrement));
-
         var taxableIncome = income.wageIncome + income.interest + income.shortTermCapitalGains + income.ordinaryDividends -
-                            deductions - exemptions * taxes.exemption * exemptionFactor - (income.numDependents > 0 ? income.dependentCareFsa : 0);
+                            deductions - (income.numDependents > 0 ? income.dependentCareFsa : 0);
 
         var taxesOwed = 0;
         var bracket = null;

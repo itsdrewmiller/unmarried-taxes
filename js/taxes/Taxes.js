@@ -1,29 +1,14 @@
 ﻿function Taxes() {
     var self = this;
     self.federalBrackets = [
-        { rate: 0.1, singleBottom: 0, singleTop: 9325, hohBottom: 0, hohTop: 13350, marriedBottom: 0, marriedTop: 18650 },
-        { rate: 0.15, singleBottom: 9325, singleTop: 37950, hohBottom: 13350, hohTop: 50800, marriedBottom: 18650, marriedTop: 75900 },
-        { rate: 0.25, singleBottom: 37950, singleTop: 91900, hohBottom: 50800, hohTop: 131200, marriedBottom: 75900, marriedTop: 153100 },
-        { rate: 0.28, singleBottom: 91900, singleTop: 191650, hohBottom: 131200, hohTop: 212500, marriedBottom: 153100, marriedTop: 233350 },
-        { rate: 0.33, singleBottom: 191650, singleTop: 416700, hohBottom: 212500, hohTop: 416700, marriedBottom: 233350, marriedTop: 416700 },
-        { rate: 0.35, singleBottom: 416700, singleTop: 418400, hohBottom: 416700, hohTop: 444500, marriedBottom: 416700, marriedTop: 470700 },
-        { rate: 0.396, singleBottom: 418400, singleTop: Infinity, hohBottom: 444500, hohTop: Infinity, marriedBottom: 470700, marriedTop: Infinity }];
-    self.standardDeduction = { single: 6350, headOfHousehold: 9350, married: 12700 };
-    self.exemption = 4050;
-
-    // PEP
-    self.exemptionPhaseout = { 
-        start: { single: 261500, headOfHousehold: 287650, married: 313800},
-        increment: 2500,
-        perIncrement: 0.02
-    };
-
-    // Pease
-    self.deductionPhaseout = { 
-        start: { single: 261500, headOfHousehold: 287650, married: 313800},
-        totalPercentage: 0.2,
-        diffPercentage: 0.03
-    };
+        { rate: 0.1, singleBottom: 0, singleTop: 9525, hohBottom: 0, hohTop: 13600, marriedBottom: 0, marriedTop: 19050 },
+        { rate: 0.12, singleBottom: 9525, singleTop: 38700, hohBottom: 13600, hohTop: 51800, marriedBottom: 19050, marriedTop: 77400 },
+        { rate: 0.22, singleBottom: 38700, singleTop: 82500, hohBottom: 51800, hohTop: 82500, marriedBottom: 77400, marriedTop: 165000 },
+        { rate: 0.24, singleBottom: 82500, singleTop: 157500, hohBottom: 82500, hohTop: 157500, marriedBottom: 165000, marriedTop: 315000 },
+        { rate: 0.32, singleBottom: 157500, singleTop: 200000, hohBottom: 157500, hohTop: 200000, marriedBottom: 315000, marriedTop: 400000 },
+        { rate: 0.35, singleBottom: 200000, singleTop: 500000, hohBottom: 200000, hohTop: 500000, marriedBottom: 400000, marriedTop: 600000 },
+        { rate: 0.37, singleBottom: 500000, singleTop: Infinity, hohBottom: 500000, hohTop: Infinity, marriedBottom: 600000, marriedTop: Infinity }];
+    self.standardDeduction = { single: 12000, headOfHousehold: 18000, married: 24000 };
 
     self.mortgageInsurancePhaseOut = {
         start: 100000,
@@ -41,15 +26,15 @@
         },
         expensesPerDependent: 3000,
         maxExpenses: 6000
-    }; // no change 2016
+    };
 
     self.amtLowRate = 0.26;
     self.amtHighRate = 0.28;
-    self.amtHighRateStart = 187800;
+    self.amtHighRateStart = 191100;
 
-    self.amtExemption = { single: 54300, married: 84500};
+    self.amtExemption = { single: 70300, married: 109400};
 
-    self.amtPhaseOutStart = { single: 120700, married: 160900 };
+    self.amtPhaseOutStart = { single: 500000, married: 1000000 };
     self.amtPhaseOutRate = 0.25;
 
     self.socialSecurityRate = 0.062;
@@ -57,12 +42,18 @@
     self.medicareRate = 0.0145;
     self.medicareAdditionalRate = 0.009;
     self.medicareAdditionalStart = { single: 200000, headOfHousehold: 200000, married: 250000};
-    // no change 2016
-
+ 
+    // TODO refactor, no longer matches up to income tax brackets
     self.longTermCapitalGains = {
         levels: [0.15, 0.396, Infinity],
         rates: [0, 0.15, 0.20]
     };
+
+    // TODO Child Tax Credit (200k-240k threshold now)
+
+    // TODO net investment income tax
+
+    self.stateAndLocalDeductionCap = 10000;
 
     self.ma = {
         rate: 0.051,
@@ -79,5 +70,9 @@
         shortTermCapitalGainsRate: 0.12,
         longTermCapitalGainsRate: 0.051
     };
-    // not updated for 2016 yet
+
+    // Let's figure this out after manually filing once
+    self.md = {
+
+    }
 } 
