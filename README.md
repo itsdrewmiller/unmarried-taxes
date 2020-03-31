@@ -8,7 +8,21 @@ To run
 
 ```
 git submodule update --init --remote
-npm install
 ```
 
-Then open the unmarried-taxes.html pagdir
+Then open the unmarried-taxes.html page and mess with stuff.
+
+Annual Updates
+==============
+
+- Google for any notable tax changes YOY
+- Update Taxes.js
+-- update the ranges for federalBrackets
+-- update standardDeduction
+-- update amtHighRateStart
+-- update amtExemption
+-- update amtPhaseOutStart
+-- update socialSecurityCap
+-- update longTermCapitalGains levels (assuming I fix this code)
+- copy settings.js to settings-override.js
+-- Add in relevant w2 info

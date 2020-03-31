@@ -1,14 +1,14 @@
 ﻿function Taxes() {
     var self = this;
     self.federalBrackets = [
-        { rate: 0.1, singleBottom: 0, singleTop: 9525, hohBottom: 0, hohTop: 13600, marriedBottom: 0, marriedTop: 19050 },
-        { rate: 0.12, singleBottom: 9525, singleTop: 38700, hohBottom: 13600, hohTop: 51800, marriedBottom: 19050, marriedTop: 77400 },
-        { rate: 0.22, singleBottom: 38700, singleTop: 82500, hohBottom: 51800, hohTop: 82500, marriedBottom: 77400, marriedTop: 165000 },
-        { rate: 0.24, singleBottom: 82500, singleTop: 157500, hohBottom: 82500, hohTop: 157500, marriedBottom: 165000, marriedTop: 315000 },
-        { rate: 0.32, singleBottom: 157500, singleTop: 200000, hohBottom: 157500, hohTop: 200000, marriedBottom: 315000, marriedTop: 400000 },
-        { rate: 0.35, singleBottom: 200000, singleTop: 500000, hohBottom: 200000, hohTop: 500000, marriedBottom: 400000, marriedTop: 600000 },
-        { rate: 0.37, singleBottom: 500000, singleTop: Infinity, hohBottom: 500000, hohTop: Infinity, marriedBottom: 600000, marriedTop: Infinity }];
-    self.standardDeduction = { single: 12000, headOfHousehold: 18000, married: 24000 };
+        { rate: 0.1, singleBottom: 0, singleTop: 9700, hohBottom: 0, hohTop: 12850, marriedBottom: 0, marriedTop: 19400 },
+        { rate: 0.12, singleBottom: 9700, singleTop: 39475, hohBottom: 12850, hohTop: 52850, marriedBottom: 19400, marriedTop: 78950 },
+        { rate: 0.22, singleBottom: 39475, singleTop: 84200, hohBottom: 52850, hohTop: 84200, marriedBottom: 78950, marriedTop: 168400 },
+        { rate: 0.24, singleBottom: 84200, singleTop: 160725, hohBottom: 84200, hohTop: 160725, marriedBottom: 168400, marriedTop: 321450 },
+        { rate: 0.32, singleBottom: 160725, singleTop: 204100, hohBottom: 160725, hohTop: 204100, marriedBottom: 321450, marriedTop: 408200 },
+        { rate: 0.35, singleBottom: 204100, singleTop: 510300, hohBottom: 204100, hohTop: 510300, marriedBottom: 408200, marriedTop: 612350 },
+        { rate: 0.37, singleBottom: 510300, singleTop: Infinity, hohBottom: 510300, hohTop: Infinity, marriedBottom: 612350, marriedTop: Infinity }];
+    self.standardDeduction = { single: 12200, headOfHousehold: 18350, married: 24400 };
 
     self.mortgageInsurancePhaseOut = {
         start: 100000,
@@ -30,22 +30,24 @@
 
     self.amtLowRate = 0.26;
     self.amtHighRate = 0.28;
-    self.amtHighRateStart = 191100;
+    self.amtHighRateStart = 194800;
 
-    self.amtExemption = { single: 70300, married: 109400};
+    self.amtExemption = { single: 71700, married: 111700};
 
-    self.amtPhaseOutStart = { single: 500000, married: 1000000 };
+    self.amtPhaseOutStart = { single: 510300, married: 1020600 };
     self.amtPhaseOutRate = 0.25;
 
     self.socialSecurityRate = 0.062;
-    self.socialSecurityCap  = 127200;
+    self.socialSecurityCap  = 132900;
     self.medicareRate = 0.0145;
     self.medicareAdditionalRate = 0.009;
     self.medicareAdditionalStart = { single: 200000, headOfHousehold: 200000, married: 250000};
  
     // TODO refactor, no longer matches up to income tax brackets
+    // Mostly need to fix 0.37 since the mid-400k threshold specifically doesn't match
+    // Not a huge impact assuming 500k here other than if income is very close to but under 500k
     self.longTermCapitalGains = {
-        levels: [0.15, 0.396, Infinity],
+        levels: [0.22, 0.37, Infinity],
         rates: [0, 0.15, 0.20]
     };
 
