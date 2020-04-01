@@ -26,3 +26,8 @@ Annual Updates
 -- update longTermCapitalGains levels (assuming I fix this code)
 - copy settings.js to settings-override.js
 -- Add in relevant w2 info
+
+Bugs
+====
+
+- Not accurately calculating married payroll taxes (underestimates additional medicare tax)

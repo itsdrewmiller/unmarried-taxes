@@ -61,7 +61,7 @@
 
         var cappedSalt = Math.min(taxes.stateAndLocalDeductionCap, income.stateTaxWithheld + income.previousStateTaxPayment + income.propertyTax);
 
-        var deductions = income.charity + cappedSalt + mortgageInsuranceDeduction + this.getTotalMortgageInterest(taxes, income);
+        var deductions = income.charity + cappedSalt + mortgageInsuranceDeduction + this.getTotalMortgageInterest(income);
 
         if (deductions < standardDeduction) {
             deductions = standardDeduction;
@@ -129,16 +129,13 @@
 
         return parseFloat(accounting.toFixed(taxesOwed, 2));
     },
-    getTotalMortgageInterest: function (taxes, income) {
+    getTotalMortgageInterest: function (income) {
         // TODO figure out best way to factor in 750k cap
-        var mortgageInterest1Fraction = Math.min(1, 0) * income.mortgageInterest1;
-        var mortgageInterest2Fraction = Math.min(1, 0) * income.mortgageInterest2;
-
-        return mortgageInterest1Fraction + mortgageInterest2Fraction;
+        return income.mortgageInterest1 + income.mortgageInterest2;
     },
     calculateAmt: function (taxes, income) {
 
-        var totalMortgageInterest = this.getTotalMortgageInterest(taxes, income);
+        var totalMortgageInterest = this.getTotalMortgageInterest(income);
 
         var taxableIncome = income.wageIncome + income.interest + income.shortTermCapitalGains + income.ordinaryDividends -
             totalMortgageInterest - income.charity - (income.numDependents > 0 ? income.dependentCareFsa : 0);
@@ -245,7 +242,8 @@
 
         var taxableIncome = income.wageIncome - income.dependentCareFsa;
         var payrollTax = Math.min(taxableIncome * taxes.socialSecurityRate, taxes.socialSecurityCap * taxes.socialSecurityRate);
-        payrollTax += taxableIncome * taxes.medicareRate + Math.max(0, (taxableIncome - additionalMedicareStart) * taxes.medicareAdditionalRate);
+        var additionalMedicareTax = Math.max(0, (taxableIncome - additionalMedicareStart) * taxes.medicareAdditionalRate);
+        payrollTax += taxableIncome * taxes.medicareRate + additionalMedicareTax;
 
         return parseFloat(accounting.toFixed(payrollTax, 2));
     }
